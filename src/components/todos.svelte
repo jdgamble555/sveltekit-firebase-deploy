@@ -3,10 +3,9 @@
 	import { useUser } from '$lib/user';
 	import TodoItem from '@components/todo-item.svelte';
 
-	const user = useUser();
-
 	let text = genText();
 
+	const user = useUser();
 	const todos = useTodos(user);
 
 	function add() {

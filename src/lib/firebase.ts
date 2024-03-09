@@ -1,9 +1,7 @@
 import { PUBLIC_FIREBASE_CONFIG } from '$env/static/public';
-
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-//import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 

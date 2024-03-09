@@ -1,5 +1,3 @@
-// Todos
-
 import {
     QuerySnapshot,
     collection,
@@ -37,7 +35,10 @@ export const snapToData = (q: QuerySnapshot<DocumentData, DocumentData>) => {
 }
 
 
-export const useTodos = (user: Readable<UserType | null>, todos: Todo[] | null = null) => {
+export const useTodos = (
+    user: Readable<UserType | null>,
+    todos: Todo[] | null = null
+) => {
 
     // filtering todos depend on user
     return derived<Readable<UserType | null>, Todo[] | null>(

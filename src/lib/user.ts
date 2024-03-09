@@ -9,13 +9,8 @@ import { readable, type Subscriber } from "svelte/store";
 import { auth } from "./firebase";
 import { useSharedStore } from "./use-shared";
 
-export async function loginWithGoogle() {
-    return await signInWithPopup(auth, new GoogleAuthProvider());
-}
-
-export async function logout() {
-    return await signOut(auth);
-}
+export const loginWithGoogle = async () => await signInWithPopup(auth, new GoogleAuthProvider());
+export const logout = async () => await signOut(auth);
 
 const user = (defaultUser: UserType | null = null) => readable<UserType | null>(
     defaultUser,
