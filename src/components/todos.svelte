@@ -1,39 +1,23 @@
 <script lang="ts">
-	import { addTodo, genText, useTodos } from '$lib/todos';
-	import { useUser } from '$lib/user';
+	import { fly } from 'svelte/transition';
+	import { useTodos } from '$lib/todos';
 	import TodoItem from '@components/todo-item.svelte';
+	import TodoForm from './todo-form.svelte';
 
-	let text = genText();
-
-	const user = useUser();
-	const todos = useTodos(user);
-
-	function add() {
-		addTodo(text, $user!.uid);
-		text = genText();
-	}
+	const todos = useTodos();
 </script>
 
 {#if $todos?.length}
-	<table class="border-separate border-spacing-x-4">
-		<thead>
-			<tr>
-				<th>Task</th>
-				<th>ID</th>
-				<th colspan="2">Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each $todos || [] as todo}
-				<TodoItem {todo} />
-			{/each}
-		</tbody>
-	</table>
+	<div
+		class="grid grid-cols-[auto,auto,auto,auto] gap-3 justify-items-start"
+		in:fly={{ x: 900, duration: 500 }}
+	>
+		{#each $todos || [] as todo (todo.id)}
+			<TodoItem {todo} />
+		{/each}
+	</div>
+{:else}
+	<p><b>Add your first todo item!</b></p>
 {/if}
-<form on:submit|preventDefault={add}>
-	<input class="border p-2 rounded-lg" bind:value={text} />
-	<button class="border p-2 rounded-lg bg-purple-600 text-white font-semibold" type="submit">
-		Add Task
-	</button>
-</form>
 
+<TodoForm />

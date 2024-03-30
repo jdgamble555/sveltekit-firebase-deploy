@@ -14,7 +14,8 @@ import {
 } from "firebase/firestore";
 
 import { derived, type Readable } from "svelte/store";
-import { db } from "./firebase";
+import { auth, db } from "./firebase";
+import { useUser } from "./user";
 
 export const genText = () => Math.random().toString(36).substring(2, 15);
 
@@ -36,9 +37,10 @@ export const snapToData = (q: QuerySnapshot<DocumentData, DocumentData>) => {
 
 
 export const useTodos = (
-    user: Readable<UserType | null>,
     todos: Todo[] | null = null
 ) => {
+
+    const user = useUser();
 
     // filtering todos depend on user
     return derived<Readable<UserType | null>, Todo[] | null>(
@@ -60,7 +62,13 @@ export const useTodos = (
         });
 };
 
-export const addTodo = async (text: string, uid: string) => {
+export const addTodo = async (text: string) => {
+
+    const uid = auth.currentUser?.uid;
+
+    if (!uid) {
+        throw 'No User!';
+    }
 
     setDoc(doc(collection(db, 'todos')), {
         uid,
