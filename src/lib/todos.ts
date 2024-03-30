@@ -19,7 +19,9 @@ import { useUser } from "./user";
 
 export const genText = () => Math.random().toString(36).substring(2, 15);
 
-export const snapToData = (q: QuerySnapshot<DocumentData, DocumentData>) => {
+export const snapToData = (
+    q: QuerySnapshot<DocumentData, DocumentData>
+) => {
 
     // creates todo data from snapshot
     if (q.empty) {
@@ -43,7 +45,10 @@ export const useTodos = (
     const user = useUser();
 
     // filtering todos depend on user
-    return derived<Readable<UserType | null>, Todo[] | null>(
+    return derived<
+        Readable<UserType | null>,
+        Todo[] | null
+    >(
         user, ($user, set) => {
             if (!$user) {
                 set(null);
