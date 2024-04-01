@@ -11,7 +11,8 @@ import {
     where,
     type WithFieldValue,
     QueryDocumentSnapshot,
-    type SnapshotOptions
+    type SnapshotOptions,
+    Timestamp
 } from "firebase/firestore";
 
 import { derived, type Readable } from "svelte/store";
@@ -36,13 +37,12 @@ const todoConverter = {
         options: SnapshotOptions
     ) {
         const data = snapshot.data(options);
+        const created = data.created as Timestamp;
         return {
+            ...data,
             id: snapshot.id,
-            uid: data.uid,
-            complete: data.complete,
-            text: data.text,
-            created: data.createdAt?.toMillis()
-        };
+            created: created.toDate()
+        } as Todo;
     }
 };
 
