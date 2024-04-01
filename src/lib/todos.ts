@@ -1,5 +1,4 @@
 import {
-    QuerySnapshot,
     collection,
     deleteDoc,
     doc,
@@ -10,7 +9,9 @@ import {
     setDoc,
     updateDoc,
     where,
-    type DocumentData
+    type WithFieldValue,
+    QueryDocumentSnapshot,
+    type SnapshotOptions
 } from "firebase/firestore";
 
 import { derived, type Readable } from "svelte/store";
@@ -19,24 +20,31 @@ import { useUser } from "./user";
 
 export const genText = () => Math.random().toString(36).substring(2, 15);
 
-export const snapToData = (
-    q: QuerySnapshot<DocumentData, DocumentData>
-) => {
-
-    // creates todo data from snapshot
-    if (q.empty) {
-        return [];
-    }
-    return q.docs.map((doc) => {
-        const data = doc.data();
-        return {
-            ...data,
-            created: new Date(data['created']?.toMillis()),
-            id: doc.id
+const todoConverter = {
+    toFirestore(value: WithFieldValue<Partial<Todo>>) {
+        if (!auth.currentUser) {
+            throw 'User not logged in!';
         }
-    }) as Todo[];
-}
-
+        return {
+            ...value,
+            uid: auth.currentUser.uid,
+            created: serverTimestamp()
+        };
+    },
+    fromFirestore(
+        snapshot: QueryDocumentSnapshot,
+        options: SnapshotOptions
+    ) {
+        const data = snapshot.data(options);
+        return {
+            id: snapshot.id,
+            uid: data.uid,
+            complete: data.complete,
+            text: data.text,
+            created: data.createdAt?.toMillis()
+        };
+    }
+};
 
 export const useTodos = (
     todos: Todo[] | null = null
@@ -63,23 +71,18 @@ export const useTodos = (
                     collection(db, 'todos'),
                     where('uid', '==', $user.uid),
                     orderBy('created')
-                ), (q) => set(snapToData(q)))
+                ).withConverter<Todo>(todoConverter), (q) => {
+                    set(q.empty ? [] : q.docs.map(doc => doc.data()));
+                })
         });
 };
 
 export const addTodo = async (text: string) => {
 
-    const uid = auth.currentUser?.uid;
-
-    if (!uid) {
-        throw 'No User!';
-    }
-
-    setDoc(doc(collection(db, 'todos')), {
-        uid,
+    setDoc(doc(collection(db, 'todos'))
+        .withConverter(todoConverter), {
         text,
-        complete: false,
-        created: serverTimestamp()
+        complete: false
     });
 }
 

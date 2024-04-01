@@ -11,6 +11,7 @@ declare global {
 
 	type Todo = {
 		id: string;
+		uid: string;
 		text: string;
 		complete: boolean;
 		created: Date;
