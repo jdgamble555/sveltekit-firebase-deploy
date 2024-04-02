@@ -7,12 +7,12 @@ import {
     query,
     serverTimestamp,
     setDoc,
-    updateDoc,
     where,
-    type WithFieldValue,
     QueryDocumentSnapshot,
     type SnapshotOptions,
-    Timestamp
+    Timestamp,
+    type PartialWithFieldValue,
+    type SetOptions
 } from "firebase/firestore";
 
 import { derived, type Readable } from "svelte/store";
@@ -22,14 +22,15 @@ import { useUser } from "./user";
 export const genText = () => Math.random().toString(36).substring(2, 15);
 
 const todoConverter = {
-    toFirestore(value: WithFieldValue<Partial<Todo>>) {
+    toFirestore(value: PartialWithFieldValue<Todo>, options?: SetOptions) {
+        const isMerge = options && 'merge' in options;
         if (!auth.currentUser) {
             throw 'User not logged in!';
         }
         return {
             ...value,
             uid: auth.currentUser.uid,
-            created: serverTimestamp()
+            [isMerge ? 'updated' : 'created']: serverTimestamp()
         };
     },
     fromFirestore(
@@ -72,22 +73,28 @@ export const useTodos = (
                     where('uid', '==', $user.uid),
                     orderBy('created')
                 ).withConverter<Todo>(todoConverter), (q) => {
-                    set(q.empty ? [] : q.docs.map(doc => doc.data()));
+                    set(q.empty ? [] : q.docs.map(doc => doc.data({
+                        serverTimestamps: 'estimate'
+                    })));
                 })
         });
 };
 
 export const addTodo = async (text: string) => {
 
-    setDoc(doc(collection(db, 'todos'))
-        .withConverter(todoConverter), {
+    setDoc(doc(collection(db, 'todos')).withConverter(todoConverter), {
         text,
         complete: false
     });
 }
 
 export const updateTodo = (id: string, newStatus: boolean) => {
-    updateDoc(doc(db, 'todos', id), { complete: newStatus });
+
+    setDoc(
+        doc(db, 'todos', id).withConverter(todoConverter),
+        { complete: newStatus },
+        { merge: true }
+    );
 }
 
 export const deleteTodo = (id: string) => {
