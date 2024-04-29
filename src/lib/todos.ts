@@ -91,7 +91,7 @@ export const addTodo = async (text: string) => {
 export const updateTodo = (id: string, newStatus: boolean) => {
 
     setDoc(
-        doc(db, 'todos', id).withConverter(todoConverter),
+        doc(db, 'todos', id),
         { complete: newStatus },
         { merge: true }
     );
