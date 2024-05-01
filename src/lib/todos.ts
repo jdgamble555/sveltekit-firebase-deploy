@@ -30,7 +30,7 @@ const todoConverter = {
         return {
             ...value,
             uid: auth.currentUser.uid,
-            [isMerge ? 'updated' : 'created']: serverTimestamp()
+            [isMerge ? 'updatedAt' : 'createdAt']: serverTimestamp()
         };
     },
     fromFirestore(
@@ -38,11 +38,11 @@ const todoConverter = {
         options: SnapshotOptions
     ) {
         const data = snapshot.data(options);
-        const created = data.created as Timestamp;
+        const createdAt = data.createdAt as Timestamp;
         return {
             ...data,
             id: snapshot.id,
-            created: created.toDate()
+            createdAt: createdAt.toDate()
         } as Todo;
     }
 };
@@ -71,7 +71,7 @@ export const useTodos = (
                 query(
                     collection(db, 'todos'),
                     where('uid', '==', $user.uid),
-                    orderBy('created')
+                    orderBy('createdAt')
                 ).withConverter<Todo>(todoConverter), (q) => {
                     set(q.empty ? [] : q.docs.map(doc => doc.data({
                         serverTimestamps: 'estimate'
