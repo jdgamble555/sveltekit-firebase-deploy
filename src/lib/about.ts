@@ -15,7 +15,7 @@ export const getAbout = async (id: string) => {
 
     if (typeof self === 'object' && self.self === self) {
         // @ts-expect-error - cloudflare
-        self.self = structuredClone(self);
+        self.self = { ...self, add: true };
     }
 
     const serverApp = initializeServerApp(firebase_config, {
@@ -24,7 +24,7 @@ export const getAbout = async (id: string) => {
 
     if (typeof self !== 'undefined') {
         self.self = self;
-    }  
+    }
 
     const db = getFirestore(serverApp);
 
