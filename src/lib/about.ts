@@ -25,7 +25,7 @@ export const getAbout = async (id: string) => {
     });
 
     if (typeof self !== 'undefined') {
-        self.self = self;
+        //self.self = self;
     }  
 
     const db = getFirestore(serverApp);
