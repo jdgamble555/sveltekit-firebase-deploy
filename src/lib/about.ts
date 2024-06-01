@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
-import { initializeServerApp } from "firebase/app";
+//import { initializeServerApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { PUBLIC_FIREBASE_CONFIG } from "$env/static/public";
 
 type AboutDoc = {
@@ -13,18 +14,7 @@ const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
-    if (typeof self === 'object' && self.self === self) {
-        // @ts-expect-error - cloudflare
-        self.self = { ...self, add: true };
-    }
-
-    const serverApp = initializeServerApp(firebase_config, {
-        authIdToken: id
-    });
-
-    if (typeof self !== 'undefined') {
-        self.self = self;
-    }
+    const serverApp = initializeApp(firebase_config);
 
     const db = getFirestore(serverApp);
 
