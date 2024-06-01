@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
 import { initializeServerApp } from "firebase/app";
 import { PUBLIC_FIREBASE_CONFIG } from "$env/static/public";
@@ -7,6 +8,7 @@ type AboutDoc = {
     description: string;
 };
 
+declare const self = {};
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
