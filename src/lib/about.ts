@@ -15,7 +15,7 @@ export const getAbout = async (id: string) => {
 
     if (typeof self === 'object' && self.self === self) {
         // @ts-expect-error - cloudflare
-        self.self = {};
+        self.self = structuredClone(self);
     }
 
     const serverApp = initializeServerApp(firebase_config, {
