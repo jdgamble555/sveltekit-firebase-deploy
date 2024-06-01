@@ -3,13 +3,13 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ request }) => {
 
-    const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1];
+    const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1] || '';
 
-    if (!authIdToken) {
+    /*if (!authIdToken) {
         return {
             about: {}
         };
-    }
+    }*/
 
     return {
         about: await getAbout(authIdToken)

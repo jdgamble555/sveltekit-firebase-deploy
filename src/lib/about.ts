@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
 //import { initializeServerApp } from "firebase/app";
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { PUBLIC_FIREBASE_CONFIG } from "$env/static/public";
 import { getAuth } from "firebase/auth";
 
@@ -15,7 +15,9 @@ const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
-    const serverApp = initializeApp(firebase_config);
+    const serverApp = getApps().length
+        ? getApp()
+        : initializeApp(firebase_config);
 
     const db = getFirestore(serverApp);
 
