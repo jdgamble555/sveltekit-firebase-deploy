@@ -14,10 +14,7 @@ const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
-    let x: object;
-
     if (typeof self === 'object' && self.self === self) {
-        x = self.self;
         self.self = {};
     }
 
@@ -25,9 +22,9 @@ export const getAbout = async (id: string) => {
         authIdToken: id
     });
 
-    if (typeof x !== 'undefined') {
-        self.self = x;
-    }    
+    if (typeof self !== 'undefined') {
+        self.self = self;
+    }  
 
     const db = getFirestore(serverApp);
 
