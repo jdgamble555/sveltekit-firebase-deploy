@@ -8,17 +8,26 @@ type AboutDoc = {
     description: string;
 };
 
-if (typeof self === 'object' && self.self === self) {
-    self.self = {}; // Override self to an empty object or some other value that won't pass the check
-}
+
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
+    let x: object;
+
+    if (typeof self === 'object' && self.self === self) {
+        x = self.self;
+        self.self = {};
+    }
+
     const serverApp = initializeServerApp(firebase_config, {
         authIdToken: id
     });
+
+    if (typeof x !== 'undefined') {
+        self.self = x;
+    }    
 
     const db = getFirestore(serverApp);
 
