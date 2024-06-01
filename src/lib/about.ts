@@ -13,11 +13,11 @@ const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
-    console.log(JSON.stringify({token: id}));
+    console.log(JSON.stringify({ token: id }));
 
     if (typeof self === 'object' && self.self === self) {
         // @ts-expect-error - cloudflare
-        self.self = {};
+        //self.self = {};
     }
 
     const serverApp = initializeServerApp(firebase_config, {
@@ -26,7 +26,7 @@ export const getAbout = async (id: string) => {
 
     if (typeof self !== 'undefined') {
         //self.self = self;
-    }  
+    }
 
     const db = getFirestore(serverApp);
 
