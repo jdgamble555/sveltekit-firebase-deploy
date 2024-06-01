@@ -8,7 +8,12 @@ type AboutDoc = {
     description: string;
 };
 
-declare const self = {};
+declare let self: any;
+
+if (typeof self === 'undefined') {
+    // Fallback for environments where self is not defined
+    self = {};
+}
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
