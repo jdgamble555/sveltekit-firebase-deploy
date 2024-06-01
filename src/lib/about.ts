@@ -13,7 +13,7 @@ const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
 export const getAbout = async (id: string) => {
 
-    console.log(id);
+    console.log(JSON.stringify({token: id}));
 
     if (typeof self === 'object' && self.self === self) {
         // @ts-expect-error - cloudflare
