@@ -36,8 +36,14 @@ self.addEventListener('fetch', async (event) => {
             }
         }
 
-        return fetch(req);
+        return await fetch(req);
     };
 
-    evt.respondWith(getIdTokenPromise().then(requestProcessor, requestProcessor));
+    const idToken = await getIdTokenPromise();
+
+    console.log(idToken);
+
+    const requestFetch = await requestProcessor(idToken);
+
+    evt.respondWith(requestFetch);
 });
