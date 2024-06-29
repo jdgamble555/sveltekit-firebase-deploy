@@ -27,7 +27,7 @@ export const firebaseServer = (request: Request) => {
 
     const serverApp = initializeServerApp(firebase_config, {
         authIdToken,
-        releaseOnDeref: request
+        //releaseOnDeref: request
     });
 
     const db = getFirestore(serverApp);
