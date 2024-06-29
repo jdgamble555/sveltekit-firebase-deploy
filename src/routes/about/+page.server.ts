@@ -1,18 +1,13 @@
 import { getAbout } from '$lib/about';
+import { firebaseServer } from '$lib/firebase';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ request }) => {
-
-    const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1] || '';
-
-    if (!authIdToken) {
-        return {
-            about: {}
-        };
-    }
+    
+    const { db } = firebaseServer(request);
 
     return {
-        about: await getAbout(authIdToken)
+        about: await getAbout(db)
     };
 
 }) satisfies PageServerLoad;

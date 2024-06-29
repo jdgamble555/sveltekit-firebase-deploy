@@ -1,11 +1,12 @@
 import { PUBLIC_FIREBASE_CONFIG } from '$env/static/public';
-import { getApp, getApps, initializeApp } from 'firebase/app';
+import { error } from '@sveltejs/kit';
+import { getApp, getApps, initializeApp, initializeServerApp } from 'firebase/app';
 import { getAuth, getIdToken, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
 
-// initialize and login
+// client setup
 
 export const app = getApps().length
     ? getApp()
@@ -13,6 +14,30 @@ export const app = getApps().length
 
 export const auth = getAuth();
 export const db = getFirestore();
+
+// server setup
+
+export const firebaseServer = (request: Request) => {
+
+    const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1] || '';
+
+    if (!authIdToken) {
+        error(401, 'Not Logged In!');
+    }
+
+    const serverApp = initializeServerApp(firebase_config, {
+        authIdToken,
+        releaseOnDeref: request
+    });
+
+    const db = getFirestore(serverApp);
+
+    return {
+        db
+    };
+};
+
+// service worker setup
 
 export const getIdTokenPromise = (): Promise<string | null> => {
     return new Promise((resolve, reject) => {
