@@ -21,6 +21,8 @@ export const firebaseServer = (request: Request) => {
 
     const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1] || '';
 
+    console.log(request.headers.get('Authorization'));
+
     if (!authIdToken) {
         error(401, 'Not Logged In!');
     }
