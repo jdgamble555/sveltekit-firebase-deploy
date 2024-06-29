@@ -3,7 +3,11 @@
 import { getBodyContent, getOriginFromUrl } from "./utils";
 import { getIdTokenPromise } from "$lib/firebase";
 
+console.log('registering...');
+
 self.addEventListener('fetch', async (event) => {
+
+    console.log('fetching...');
 
     const evt = event as FetchEvent;
 
