@@ -5,6 +5,7 @@ import { getIdTokenPromise } from "$lib/firebase";
 
 console.log('registering...');
 
+
 self.addEventListener('fetch', (event) => {
 
     const evt = event as FetchEvent;
