@@ -5,6 +5,9 @@ import { getIdTokenPromise } from "$lib/firebase";
 
 console.log('registering...');
 
+self.addEventListener('activate', () => {
+    (self as unknown as ServiceWorkerGlobalScope).clients.claim()
+});
 
 self.addEventListener('fetch', (event) => {
 
