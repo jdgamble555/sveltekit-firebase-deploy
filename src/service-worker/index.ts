@@ -47,5 +47,5 @@ self.addEventListener('fetch', (event) => {
         return await fetch(req);
     };
 
-    evt.waitUntil(requestProcessor());
+    evt.respondWith(requestProcessor());
 });
