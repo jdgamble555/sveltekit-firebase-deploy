@@ -9,7 +9,7 @@ self.addEventListener('fetch', (event) => {
 
     const evt = event as FetchEvent;
 
-    self.console.log('fetching...');
+    console.log('fetching...');
 
     const requestProcessor = async () => {
 
@@ -17,7 +17,7 @@ self.addEventListener('fetch', (event) => {
 
         const idToken = await getIdTokenPromise();
 
-        self.console.log(idToken);
+        console.log(idToken);
 
         if (
             self.location.origin === getOriginFromUrl(evt.request.url) &&
