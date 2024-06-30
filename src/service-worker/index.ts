@@ -3,17 +3,15 @@
 import { getBodyContent, getOriginFromUrl } from "./utils";
 import { getIdTokenPromise } from "$lib/firebase";
 
-console.log('registering...');
-
-self.addEventListener('fetch', async (event) => {
-
-    console.log('fetching...');
+self.addEventListener('fetch', (event) => {
 
     const evt = event as FetchEvent;
 
-    const requestProcessor = async (idToken: string | null): Promise<Response> => {
+    const requestProcessor = async () => {
 
         let req = evt.request;
+
+        const idToken = await getIdTokenPromise();
 
         if (
             self.location.origin === getOriginFromUrl(evt.request.url) &&
@@ -43,11 +41,5 @@ self.addEventListener('fetch', async (event) => {
         return await fetch(req);
     };
 
-    const idToken = await getIdTokenPromise();
-
-    console.log(idToken);
-
-    const requestFetch = await requestProcessor(idToken);
-
-    evt.respondWith(requestFetch);
+    evt.respondWith(requestProcessor());
 });
