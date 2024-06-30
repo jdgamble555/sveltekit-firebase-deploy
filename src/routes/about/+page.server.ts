@@ -1,5 +1,6 @@
 import { getAbout } from '$lib/about';
-import { firebaseServer } from '$lib/firebase';
+import { firebaseServer } from '$lib/firebase-lite';
+
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ request }) => {

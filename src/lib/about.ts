@@ -1,5 +1,8 @@
-import { doc, getDoc } from "firebase/firestore/lite";
-import type { Firestore } from "firebase/firestore";
+import {
+    doc,
+    getDoc,
+    type Firestore
+} from "firebase/firestore/lite";
 
 type AboutDoc = {
     name: string;
