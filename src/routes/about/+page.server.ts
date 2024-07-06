@@ -4,7 +4,7 @@ import { firebaseServer } from '$lib/firebase-lite';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ request }) => {
-    
+
     const { db } = firebaseServer(request);
 
     return {
