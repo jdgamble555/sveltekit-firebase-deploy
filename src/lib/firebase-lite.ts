@@ -26,9 +26,7 @@ export const firebaseServer = async (request: Request) => {
         serverAuth = getAuth(serverApp);
         await serverAuth.authStateReady();
     } catch (e) {
-        if (e instanceof FirebaseError) {
-           error(401, e.message); 
-        }        
+        error(401, (e as any).message);
     }
 
     if (serverAuth.currentUser === null) {
