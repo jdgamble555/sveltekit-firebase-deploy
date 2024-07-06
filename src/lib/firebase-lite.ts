@@ -24,6 +24,7 @@ export const firebaseServer = async (request: Request) => {
     await serverAuth.authStateReady();
 
     if (serverAuth.currentUser === null) {
+        console.log(serverAuth.currentUser);
         error(401, 'Invalid Token');
     }
 
