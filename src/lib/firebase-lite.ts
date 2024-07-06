@@ -23,7 +23,7 @@ export const firebaseServer = async (request: Request) => {
 
     const db = getFirestore(serverApp);
 
-    await auth.authStateReady();
+    //await auth.authStateReady();
 
     if (auth.currentUser === null) {
         error(401, 'Invalid Token');
