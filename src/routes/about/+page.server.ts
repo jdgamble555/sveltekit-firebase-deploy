@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ request }) => {
 
-    const { db } = firebaseServer(request);
+    const { db } = await firebaseServer(request);
 
     return {
         about: await getAbout(db)
