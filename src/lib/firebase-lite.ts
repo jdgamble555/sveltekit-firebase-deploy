@@ -11,15 +11,16 @@ export const firebaseServer = async (request: Request) => {
 
     const authIdToken = request.headers.get('Authorization')?.split('Bearer ')[1];
 
+    console.log('token', authIdToken);
+
     if (!authIdToken) {
         error(401, 'Not Logged In!');
     }
 
+
     const serverApp = initializeServerApp(firebase_config, {
         authIdToken
     });
-
-    console.log(authIdToken);
 
     // auth
     const serverAuth = getAuth(serverApp);
