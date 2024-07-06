@@ -1,7 +1,7 @@
 import { PUBLIC_FIREBASE_CONFIG } from "$env/static/public";
 import { error } from "@sveltejs/kit";
-import { FirebaseError, initializeServerApp } from "firebase/app";
-import { getAuth, type Auth } from "firebase/auth";
+import { initializeServerApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 
 const firebase_config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
@@ -20,14 +20,8 @@ export const firebaseServer = async (request: Request) => {
     });
 
     // auth
-
-    let serverAuth!: Auth;
-    try {
-        serverAuth = getAuth(serverApp);
-        await serverAuth.authStateReady();
-    } catch (e) {
-        error(401, (e as any).message);
-    }
+    const serverAuth = getAuth(serverApp);
+    await serverAuth.authStateReady();
 
     if (serverAuth.currentUser === null) {
         error(401, 'Invalid Token');
