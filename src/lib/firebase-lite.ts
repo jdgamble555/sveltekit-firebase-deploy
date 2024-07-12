@@ -23,6 +23,8 @@ export const firebaseServer = async (request: Request) => {
     const serverAuth = getAuth(serverApp);
     //await serverAuth.authStateReady();
 
+    console.log(serverApp.settings.authIdToken)
+
     if (serverAuth.currentUser === null) {
         error(401, 'Invalid Token');
     }
