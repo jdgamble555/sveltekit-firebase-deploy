@@ -21,7 +21,7 @@ export const firebaseServer = async (request: Request) => {
 
     // auth
     const serverAuth = getAuth(serverApp);
-    //await serverAuth.authStateReady();
+    await serverAuth.authStateReady();
 
     console.log(serverApp.settings.authIdToken)
 
