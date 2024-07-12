@@ -4,6 +4,8 @@ import { requestProcessor } from "./utils";
 
 declare const self: ServiceWorkerGlobalScope;
 
+console.log('service worker running');
+
 
 self.addEventListener('activate', (event) => {
 
