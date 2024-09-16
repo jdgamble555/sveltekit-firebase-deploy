@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { loginWithGoogle, logout } from '$lib/user';
+	import { useAuth } from '$lib/use-user';
 	import Todos from '@components/todos.svelte';
 	import Profile from '@components/profile.svelte';
-	import { useUser } from '$lib/user';
+	import { useUser } from '$lib/use-user';
 
 	const user = useUser();
+
+	const { loginWithGoogle, logout } = useAuth();
 </script>
 
 <section class="flex flex-col gap-3 p-5 items-center">

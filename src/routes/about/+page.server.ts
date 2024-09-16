@@ -1,11 +1,15 @@
 import { getAbout } from '$lib/about';
-import { firebaseServer } from '$lib/firebase-lite';
+import { error } from '@sveltejs/kit';
 
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ request }) => {
+export const load = (async ({
+    locals: { firebase: { serverDB, serverAuth } }
+}) => {
 
-    const { serverDB } = await firebaseServer(request);
+    if (!serverAuth?.currentUser) {
+        error(401, 'You must be logged in to view this page!');
+    }
 
     return {
         about: await getAbout(serverDB)

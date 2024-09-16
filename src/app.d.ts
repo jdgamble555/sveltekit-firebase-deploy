@@ -1,4 +1,8 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { Auth } from "firebase/auth";
+import type { Firestore } from "firebase/firestore/lite";
+
 // for information about these interfaces
 declare global {
 
@@ -19,7 +23,12 @@ declare global {
 	
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			firebase: {
+				serverDB: Firestore,
+				serverAuth: Auth | null
+			};			
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

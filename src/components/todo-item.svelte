@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { deleteTodo, updateTodo } from '$lib/todos';
+	import { useDeleteTodo, useUpdateTodo } from '$lib/use-todos';
 
 	export let todo: Todo;
+
+	const { deleteTodo } = useDeleteTodo();
+	const { updateTodo } = useUpdateTodo();
 
 	function remove() {
 		deleteTodo(todo.id);

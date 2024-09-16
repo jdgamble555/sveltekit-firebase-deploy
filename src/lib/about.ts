@@ -9,10 +9,10 @@ type AboutDoc = {
     description: string;
 };
 
-export const getAbout = async (db: Firestore) => {
+export const getAbout = async (serverDB: Firestore) => {
 
     const aboutSnap = await getDoc(
-        doc(db, '/about/ZlNJrKd6LcATycPRmBPA')
+        doc(serverDB, '/about/ZlNJrKd6LcATycPRmBPA')
     );
 
     if (!aboutSnap.exists()) {

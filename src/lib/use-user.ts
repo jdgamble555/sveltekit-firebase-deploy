@@ -6,15 +6,35 @@ import {
     type User
 } from "firebase/auth";
 import { readable, type Subscriber } from "svelte/store";
-import { auth } from "./firebase";
 import { useSharedStore } from "./use-shared";
+import { useFirebase } from "./use-firebase";
 
-export const loginWithGoogle = async () =>
-    await signInWithPopup(auth, new GoogleAuthProvider());
-export const logout = async () => await signOut(auth);
+export const useAuth = () => {
 
-const user = (defaultUser: UserType | null = null) =>
-    readable<UserType | null>(
+    const { auth } = useFirebase();
+
+    const loginWithGoogle = async () => {
+        return await signInWithPopup(
+            auth,
+            new GoogleAuthProvider()
+        );
+    };
+
+    const logout = async () => {
+        return await signOut(auth);
+    };
+
+    return {
+        loginWithGoogle,
+        logout
+    };
+};
+
+const _useUser = (defaultUser: UserType | null = null) => {
+
+    const { auth } = useFirebase();
+
+    return readable<UserType | null>(
         defaultUser,
         (set: Subscriber<UserType | null>) => {
             return onIdTokenChanged(auth, (_user: User | null) => {
@@ -27,6 +47,8 @@ const user = (defaultUser: UserType | null = null) =>
             });
         }
     );
+}
+
 
 export const useUser = (defaultUser: UserType | null = null) =>
-    useSharedStore('user', user, defaultUser);
+    useSharedStore('user', _useUser, defaultUser);

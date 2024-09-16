@@ -1,11 +1,15 @@
 <script lang="ts">
-	import { addTodo, genText } from '$lib/todos';
+	import { useGenerateText, useAddTodo } from '$lib/use-todos';
 
-    let text = genText();
+	const { generateText } = useGenerateText();
+
+	let text = generateText();
+
+	const { addTodo } = useAddTodo();
 
 	function add() {
 		addTodo(text);
-		text = genText();
+		text = generateText();
 	}
 </script>
 
